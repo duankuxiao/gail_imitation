@@ -14,19 +14,17 @@ def main(config, setting, flag='train'):
     expert = exp.build_agent(rl_config, env)
     callback = exp.callback_fuc(rl_config,eval_env=eval_env)
 
-    if flag == 'train':
+    if rl_config.istraining:
         ''' train new expert agent '''
         print('train new expert agent ...')
         expert = exp.train(expert, env, callback)
         exp.test_episode(expert, test_env, output=True)
 
-    elif flag == 'load':
+    else:
         ''' load expert agent  '''
         print('load expert agent ...')
         expert = expert.load(os.path.join(r'D:\gail_imitation\results\sac_gail_fix_ts2016_ep100_wT1_wEc0.01_wPV0.0005_seed9743', 'best_model'), env=env)
         exp.test_episode(expert, test_env,output=True)
-    else:
-        raise ValueError('flag must be train or load')
 
     learner = exp.build_agent(rl_config, env)
     '''evaluate the learner before training'''
@@ -54,10 +52,18 @@ def main_rl(config, setting):
     expert = exp.build_agent(rl_config, env)
     callback = exp.callback_fuc(rl_config, eval_env=eval_env)
 
-    ''' train new expert agent '''
-    print('train new expert agent ...')
-    expert = exp.train(expert, env, callback)
-    exp.test_episode(expert, test_env, output=True)
+    if rl_config.istraining:
+        ''' train new expert agent '''
+        print('train new expert agent ...')
+        expert = exp.train(expert, env, callback)
+        exp.test_episode(expert, test_env, output=True)
+
+    else:
+        ''' load expert agent  '''
+        print('load expert agent ...')
+        expert = expert.load(os.path.join('D:/gail_imitation/results/',setting, 'best_model'), env=env)
+        exp.test_episode(expert, test_env,output=True)
+
 
 
 if __name__ == '__main__':
@@ -104,5 +110,6 @@ if __name__ == '__main__':
         setting = 'pid_' + setting
 
     # main(config,setting,flag='train')
+    rl_config.istraining = 0
     main_rl(config,setting)
 

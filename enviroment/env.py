@@ -13,7 +13,9 @@ class CustomEnv(BaseEnv):
         self.episode_rewards, self.ep_rew_mean = [], -np.inf
         # obs_space_len = self.observation_space.shape[0] if self.obs_space == 'box' else len(self.observation_space)
         # self.setting = 'obs{}_act{}_pred{}_'.format(obs_space_len, self.action_space.shape[0], len(self.pred_fea)) + setting
-
+        self.folder_path = './results/baseline/' + setting + '/'
+        if not os.path.exists(self.folder_path):
+            os.makedirs(self.folder_path)
         self.random_init = config['rl_config'].random_init if flag == 'train' else False
 
     def _init_state(self):

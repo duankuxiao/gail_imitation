@@ -69,6 +69,7 @@ class baseline_model_pid(BaseEnv):
         if not os.path.exists(self.folder_path):
             os.makedirs(self.folder_path)
         self.battery_power_init = 0
+        self.switch_previous = 1
 
     def _rc_state_init(self) -> dict:
         if self.price == 'dynamic':
@@ -200,7 +201,7 @@ if __name__ == '__main__':
     rl_config.price = 'fix'  # dynamic  fix  normal
     # pid_controller = PID_control(Kp=2132, Ki=515, Kd=53)
     # pid_controller = PID_control(Kp=670, Ki=166, Kd=60)
-    pid_controller = PID_control(Kp=100, Ki=100, Kd=100)
+    pid_controller = PID_control(Kp=1000, Ki=0.01, Kd=0)
 
     # pid_controller = PID_control()
 
