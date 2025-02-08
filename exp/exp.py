@@ -55,9 +55,10 @@ class Exp():
             os.makedirs(self.folder_path)
 
         self.best_agent_path = self.folder_path
-        self.tensorboard_path = './runs/' + self.setting + '/'
+        self.tensorboard_path = self.folder_path + 'runs/'
         if not os.path.exists(self.tensorboard_path):
             os.makedirs(self.tensorboard_path)
+
         save_config(config,os.path.join(self.folder_path,'config.pkl'))
 
         self.logger = SummaryWriter(self.tensorboard_path+'/il_eval')
@@ -81,8 +82,8 @@ class Exp():
     def build_il_trainer(self,learner,expert,env) -> GAIL:
         min_episodes = 400
         min_timesteps = 14 * 24 * 12
-        demo_batch_size = 1024
-        gen_replay_buffer_capacity = 512
+        demo_batch_size = 512
+        gen_replay_buffer_capacity = 1000000
         print('building imitation learning trainer ...')
         il_trainer_dict = {'gail': GAIL, 'bc': BC, 'airl': AIRL, 'sqil': SQIL, 'dagger':SimpleDAggerTrainer}
         il_trainer = il_trainer_dict[self.il_policy_name]
@@ -136,13 +137,13 @@ class Exp():
         return agent
 
     def callback_fuc(self,rl_config,eval_env:gym.Env=None):
-        savebest_callback = SaveOnBestTrainingRewardCallback(check_freq=rl_config.save_freq, log_dir=self.best_agent_path)
+        savebest_callback = SaveOnBestTrainingRewardCallback(check_freq=rl_config.check_freq, log_dir=self.best_agent_path)
 
         checkpoint_callback = CheckpointCallback(save_freq=rl_config.save_freq, save_path=self.best_agent_path)
-        eval_callback = EvalCallback(eval_env, best_model_save_path=self.best_agent_path, log_path=self.best_agent_path, eval_freq=rl_config.save_freq,  # 每隔 10000 步进行一次评估
+        eval_callback = EvalCallback(eval_env,n_eval_episodes=3, best_model_save_path=self.best_agent_path, log_path=self.best_agent_path, eval_freq=rl_config.save_freq,  # 每隔 10000 步进行一次评估
                                      deterministic=True, render=False)
         maxepisodes_callback = StopTrainingOnMaxEpisodes(max_episodes=rl_config.episodes, verbose=rl_config.verbose)
-        callback = CallbackList([eval_callback, maxepisodes_callback])
+        callback = CallbackList([eval_callback])
         return callback
 
     def train(self, agent, env, callback):
@@ -172,7 +173,7 @@ class Exp():
 
     def test_episode(self, agent, env, num_episodes=1,epoch=0,flag='test',output=False):
         print('start testing agent...')
-        info_dict = dict(To=[], Ti=[], temp_target=[], Te=[], switch=[], L=[], Tset=[], home=[],charge=[], battery=[],Ec_ac=[], Ec_pv=[], Ec_demand=[],  Ec_true=[], Ec_buy=[], Ec_sell=[], price=[], cost=[],CO2=[])
+        info_dict = dict(To=[], Ti=[], T_target=[], Te=[], switch=[], L=[], Tset=[], home=[],Ec_charge=[], battery=[],Ec_ac=[], Ec_pv=[], Ec_demand=[],  Ec_true=[], Ec_buy=[], Ec_sell=[], price=[], cost=[],CO2=[])
         for episode in range(num_episodes):
             obs, _ = env.reset()
             done = False

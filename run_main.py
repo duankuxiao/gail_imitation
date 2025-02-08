@@ -93,17 +93,18 @@ if __name__ == '__main__':
     rl_config.use_next_state = True
     rl_config.use_pv_forecast = True
     rl_config.ac_control = 'Tset'
-    for wBuy in [0.005]:  # 0.5,0.1,0.05,0.01,0.005,0.001
-        for wPV in [0]:  # 0.5,0.1,0.05,0.01,0.005,0.001.
+    for wBuy in [0.007,0.004]:  # 0.5,0.1,0.05,0.01,0.005,0.001
+        for wPV in [0.001,0.0005,0.0001]:  # 0.5,0.1,0.05,0.01,0.005,0.001.
 
             rl_config.wT = 1
-            rl_config.wEc = 0.01
+            rl_config.wEc = 0
             rl_config.wPV = wPV  # 0.001
             rl_config.wCO = 0
             rl_config.wSell = 0
             rl_config.wBuy = wBuy
             rl_config.wSSR = 0  # TODO 1
 
+            rl_config.wEc = 0
             rl_config.w1 = 0
             rl_config.w2 = 0
             rl_config.w3 = 0
@@ -114,7 +115,7 @@ if __name__ == '__main__':
             rl_config.random_init = True
             rl_config.verbose = 0
 
-            model_id = 'testbase'
+            model_id = '8'
 
             setting = '{}_{}_{}_{}_{}_ts{}_ep{}_wT{}_wEc{}_wPV{}_wCO{}_wS{}_wB{}_wSSR{}_seed{}'.format(model_id,rl_config.policy, rl_config.il_policy,rl_config.price,rl_config.ac_control,rl_config.timesteps,rl_config.epoches,rl_config.wT,rl_config.wEc,rl_config.wPV,rl_config.wCO,rl_config.wSell,rl_config.wBuy,rl_config.wSSR,rl_config.seed)
             if rl_config.use_action:
