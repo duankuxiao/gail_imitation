@@ -91,3 +91,23 @@ The implementation follows the paper's main control setup:
 The repository consumes pre-generated MPC expert data. It does not currently
 include a full MPC optimizer or EnergyPlus co-simulation workflow for regenerating
 that expert dataset from scratch.
+
+## License
+
+This project is released under the MIT License. See [LICENSE](LICENSE).
+
+## Citation
+
+If you use this repository in academic work, please cite the manuscript:
+
+```bibtex
+@article{hu2025novel,
+  title={A novel reinforcement learning method based on generative adversarial network for air conditioning and energy system control in residential buildings},
+  author={Hu, Zehuan and Gao, Yuan and Sun, Luning and Mae, Masayuki and Imaizumi, Taiji},
+  journal={Energy and Buildings},
+  volume={336},
+  pages={115564},
+  year={2025},
+  publisher={Elsevier}
+}
+```
