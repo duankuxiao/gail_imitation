@@ -549,10 +549,8 @@ class BaseEnv(gym.Env):
         res = res.copy()
         res["L"] = res["L"] * 0.8
 
-        if self.baseline_sr_reference is not None:
-            sr_baseline = self.baseline_sr_reference
-        if self.baseline_cost_reference is not None:
-            cost_baseline = self.baseline_cost_reference
+        sr_reference = self.baseline_sr_reference
+        cost_reference = self.baseline_cost_reference
 
         if res.empty:
             mape = np.nan
@@ -571,8 +569,10 @@ class BaseEnv(gym.Env):
         count_within_range = ((res["Ti"] - res["T_target"]).abs() <= self.T_range).sum()
         sr = count_within_range / len(res) if len(res) > 0 else 0
 
-        sr_eval = (sr - sr_baseline) / sr_baseline * 100
-        cost_eval = (cost_baseline - cost) / cost_baseline * 100
+        sr_baseline = sr if sr_reference is None else sr_reference
+        cost_baseline = cost if cost_reference is None else cost_reference
+        sr_eval = (sr - sr_baseline) / sr_baseline * 100 if sr_baseline else np.nan
+        cost_eval = (cost_baseline - cost) / cost_baseline * 100 if cost_baseline else np.nan
         metrics = {
             "mape": mape,
             "mse": mse,
