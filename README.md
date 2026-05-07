@@ -1,4 +1,8 @@
-# GAIL Imitation Control for Residential AC and Battery
+<p align="center">
+  <img src="logo.png" alt="Logo" width="200"/>
+</p>
+
+<h1 align="center">GAIL Imitation Control for Residential AC and Battery</h1>
 
 This repository trains and evaluates reinforcement learning and imitation learning controllers for residential air conditioning, PV, and battery operation.
 
