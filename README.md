@@ -2,7 +2,7 @@
   <img src="logo.png" alt="Logo" width="200"/>
 </p>
 
-<h1 align="center">GAIL Imitation Control for Residential AC and Battery</h1>
+<h1 align="center">(Energy & Buildings) A novel reinforcement learning method based on generative adversarial network for air conditioning and energy system control in residential buildings</h1>
 
 This repository trains and evaluates reinforcement learning and imitation learning controllers for residential air conditioning, PV, and battery operation.
 
