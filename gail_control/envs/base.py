@@ -240,9 +240,9 @@ class BaseEnv(gym.Env):
         path = self.train_data_path if flag == "train" else self.test_data_path
         inputs = pd.read_csv(path, index_col=0).iloc[:46081, :]
         inputs.index = pd.to_datetime(inputs.index)
-        inputs["Ec_pv"] = inputs["PV"]   # * 1.4
-        inputs["Ec_other"] = inputs["Ec_demand"]   # * 0.5
-        inputs["phi_i"] = inputs["phi_i"]   # + 0.5 * inputs["phi_i"] * (inputs["home"] == 1)
+        inputs["Ec_pv"] = inputs["PV"] * 1.4
+        inputs["Ec_other"] = inputs["Ec_demand"] * 0.5
+        inputs["phi_i"] = inputs["phi_i"] + 0.5 * inputs["phi_i"] * (inputs["home"] == 1)
         return inputs
 
     def _denormalize_act(self, action: np.ndarray) -> np.ndarray:
